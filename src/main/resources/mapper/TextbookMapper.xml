@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzj.core.dao.TextbookMapper">
+    <resultMap id="BaseResultMap" type="com.yzj.core.entity.po.Textbook">
+        <constructor>
+            <idArg column="isbn" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="author" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="press" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="fixed_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="stock_quantity" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="real_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="img_url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="create_by" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="update_by" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    isbn, title, author, press, fixed_price, stock_quantity, real_price, img_url, create_time, 
+    update_time, create_by, update_by, status
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from textbook
+        where isbn = #{isbn,jdbcType=CHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from textbook
+    where isbn = #{isbn,jdbcType=CHAR}
+  </delete>
+    <insert id="insert" parameterType="com.yzj.core.entity.po.Textbook">
+    insert into textbook (isbn, title, author, 
+      press, fixed_price, stock_quantity, 
+      real_price, img_url, create_time, 
+      update_time, create_by, update_by, 
+      status)
+    values (#{isbn,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{press,jdbcType=VARCHAR}, #{fixedPrice,jdbcType=DECIMAL}, #{stockQuantity,jdbcType=INTEGER}, 
+      #{realPrice,jdbcType=DECIMAL}, #{imgUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateBy,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yzj.core.entity.po.Textbook">
+        insert into textbook
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="isbn != null">
+                isbn,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="author != null">
+                author,
+            </if>
+            <if test="press != null">
+                press,
+            </if>
+            <if test="fixedPrice != null">
+                fixed_price,
+            </if>
+            <if test="stockQuantity != null">
+                stock_quantity,
+            </if>
+            <if test="realPrice != null">
+                real_price,
+            </if>
+            <if test="imgUrl != null">
+                img_url,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="isbn != null">
+                #{isbn,jdbcType=CHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null">
+                #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="press != null">
+                #{press,jdbcType=VARCHAR},
+            </if>
+            <if test="fixedPrice != null">
+                #{fixedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="stockQuantity != null">
+                #{stockQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="realPrice != null">
+                #{realPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="imgUrl != null">
+                #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yzj.core.entity.po.Textbook">
+        update textbook
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null">
+                author = #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="press != null">
+                press = #{press,jdbcType=VARCHAR},
+            </if>
+            <if test="fixedPrice != null">
+                fixed_price = #{fixedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="stockQuantity != null">
+                stock_quantity = #{stockQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="realPrice != null">
+                real_price = #{realPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where isbn = #{isbn,jdbcType=CHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yzj.core.entity.po.Textbook">
+    update textbook
+    set title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      press = #{press,jdbcType=VARCHAR},
+      fixed_price = #{fixedPrice,jdbcType=DECIMAL},
+      stock_quantity = #{stockQuantity,jdbcType=INTEGER},
+      real_price = #{realPrice,jdbcType=DECIMAL},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER}
+    where isbn = #{isbn,jdbcType=CHAR}
+  </update>
+
+    <select id="countByPrimaryKey" parameterType="java.lang.String" resultType="Integer">
+        select
+        count(*)
+        from textbook
+        where isbn = #{isbn,jdbcType=CHAR}
+    </select>
+
+    <select id="findStock" resultType="Textbook" parameterType="Textbook">
+        select * from textbook
+        <where>
+            status ='1'
+            <if test="isbn != null and isbn != ''">
+                AND isbn like #{isbn}"%"
+            </if>
+            <if test="title != null and title != ''">
+                AND title like "%"#{title}"%"
+            </if>
+        </where>
+        <if test="start != null and rows != null">
+            limit #{start},#{rows}
+        </if>
+    </select>
+
+    <select id="countTextbook" resultType="Integer" parameterType="Textbook">
+        select count(*) from textbook
+        <where>status ='1'
+            <if test="isbn != null and isbn != ''">
+                AND isbn like #{isbn}"%"
+            </if>
+            <if test="title != null and title != ''">
+                AND title like "%"#{title}"%"
+            </if>
+        </where>
+    </select>
+
+    <update id="addStock">
+        UPDATE textbook SET stock_quantity = stock_quantity + #{num} WHERE isbn =#{isbn}
+    </update>
+</mapper>

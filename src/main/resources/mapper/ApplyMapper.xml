@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzj.core.dao.ApplyMapper">
+    <resultMap id="BaseResultMap" type="com.yzj.core.entity.po.Apply">
+        <constructor>
+            <idArg column="apply_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="cors_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="isbn" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="author" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="press" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="fixed_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="img_url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    apply_id, cors_id, isbn, title, author, press, fixed_price, img_url, status
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from apply
+        where apply_id = #{applyId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from apply
+    where apply_id = #{applyId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yzj.core.entity.po.Apply">
+    insert into apply (apply_id, cors_id, isbn, 
+      title, author, press, 
+      fixed_price, img_url, status
+      )
+    values (#{applyId,jdbcType=INTEGER}, #{corsId,jdbcType=INTEGER}, #{isbn,jdbcType=CHAR}, 
+      #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{press,jdbcType=VARCHAR}, 
+      #{fixedPrice,jdbcType=DECIMAL}, #{imgUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yzj.core.entity.po.Apply">
+        insert into apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyId != null">
+                apply_id,
+            </if>
+            <if test="corsId != null">
+                cors_id,
+            </if>
+            <if test="isbn != null">
+                isbn,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="author != null">
+                author,
+            </if>
+            <if test="press != null">
+                press,
+            </if>
+            <if test="fixedPrice != null">
+                fixed_price,
+            </if>
+            <if test="imgUrl != null">
+                img_url,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyId != null">
+                #{applyId,jdbcType=INTEGER},
+            </if>
+            <if test="corsId != null">
+                #{corsId,jdbcType=INTEGER},
+            </if>
+            <if test="isbn != null">
+                #{isbn,jdbcType=CHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null">
+                #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="press != null">
+                #{press,jdbcType=VARCHAR},
+            </if>
+            <if test="fixedPrice != null">
+                #{fixedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="imgUrl != null">
+                #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yzj.core.entity.po.Apply">
+        update apply
+        <set>
+            <if test="corsId != null">
+                cors_id = #{corsId,jdbcType=INTEGER},
+            </if>
+            <if test="isbn != null">
+                isbn = #{isbn,jdbcType=CHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null">
+                author = #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="press != null">
+                press = #{press,jdbcType=VARCHAR},
+            </if>
+            <if test="fixedPrice != null">
+                fixed_price = #{fixedPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where apply_id = #{applyId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yzj.core.entity.po.Apply">
+    update apply
+    set cors_id = #{corsId,jdbcType=INTEGER},
+      isbn = #{isbn,jdbcType=CHAR},
+      title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      press = #{press,jdbcType=VARCHAR},
+      fixed_price = #{fixedPrice,jdbcType=DECIMAL},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where apply_id = #{applyId,jdbcType=INTEGER}
+  </update>
+
+    <select id="countByCorsidAndIsbn" resultType="Integer">
+        select
+        count(*)
+        from apply
+        where cors_id = #{corsId} and isbn = #{isbn}
+    </select>
+
+    <select id="findSelfQuickFillInInfo" resultType="HashMap">
+        SELECT apply_id as 'applyId',apply.title FROM apply
+LEFT JOIN course ON apply.cors_id = course.cors_id
+LEFT JOIN teacher ON teacher.tch_id = course.tch_id
+WHERE  course.tch_id = #{tchId} AND course.cdtl_id = #{cdtlId} ORDER BY semester DESC LIMIT 1
+
+    </select>
+
+    <select id="findAllQuickFillInInfo" resultType="HashMap">
+    SELECT apply_id as 'applyId',apply.title FROM apply
+LEFT JOIN course ON apply.cors_id = course.cors_id
+LEFT JOIN teacher ON teacher.tch_id = course.tch_id
+WHERE course.cdtl_id = #{cdtlId} ORDER BY semester DESC LIMIT 1
+    </select>
+
+    <update id="updateStatusByClassidAndSemesterAndIsbn">
+        UPDATE apply SET `status` ='1' WHERE apply.apply_id IN(SELECT a.apply_id FROM (SELECT apply.apply_id FROM apply
+LEFT JOIN order_stu on apply.apply_id = order_stu.apply_id
+LEFT JOIN course on course.cors_id = apply.cors_id
+LEFT JOIN student on student.stu_id = order_stu.stu_id
+WHERE student.class_id = #{classId} AND course.semester = #{semester} AND apply.isbn = #{isbn}) a)
+    </update>
+</mapper>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzj.core.dao.OrderStuMapper">
+    <resultMap id="BaseResultMap" type="com.yzj.core.entity.po.OrderStu">
+        <constructor>
+            <idArg column="o_stu_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="stu_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="apply_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    o_stu_id, stu_id, apply_id, status, create_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_stu
+        where o_stu_id = #{oStuId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_stu
+    where o_stu_id = #{oStuId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yzj.core.entity.po.OrderStu">
+    insert into order_stu (o_stu_id, stu_id, apply_id, 
+      status, create_time)
+    values (#{oStuId,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yzj.core.entity.po.OrderStu">
+        insert into order_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="oStuId != null">
+                o_stu_id,
+            </if>
+            <if test="stuId != null">
+                stu_id,
+            </if>
+            <if test="applyId != null">
+                apply_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="oStuId != null">
+                #{oStuId,jdbcType=INTEGER},
+            </if>
+            <if test="stuId != null">
+                #{stuId,jdbcType=INTEGER},
+            </if>
+            <if test="applyId != null">
+                #{applyId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yzj.core.entity.po.OrderStu">
+        update order_stu
+        <set>
+            <if test="stuId != null">
+                stu_id = #{stuId,jdbcType=INTEGER},
+            </if>
+            <if test="applyId != null">
+                apply_id = #{applyId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where o_stu_id = #{oStuId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yzj.core.entity.po.OrderStu">
+    update order_stu
+    set stu_id = #{stuId,jdbcType=INTEGER},
+      apply_id = #{applyId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where o_stu_id = #{oStuId,jdbcType=INTEGER}
+  </update>
+
+    <select id="countByStuIdAndApplyId" resultType="Integer">
+        select
+        count(*)
+        from order_stu
+        where stu_id = #{stuId} and apply_id = #{applyId}
+    </select>
+
+    <update id="updateStatusByClassidAndSemesterAndIsbn">
+        UPDATE order_stu
+        SET `status` = '1'
+        WHERE
+	    o_stu_id IN (
+	    SELECT
+		o_stu_id
+        FROM
+	    ( SELECT o_stu_id FROM orderdtl WHERE class_id = #{classId} AND semester = #{semester} AND isbn = #{isbn} AND `status` = "0" ) a)
+    </update>
+
+    <update id="updateByApplyId">
+        update order_stu
+        set status ='-1'
+        where
+        apply_id = #{applyId}
+    </update>
+
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzj.core.dao.AdminMapper">
+    <resultMap id="BaseResultMap" type="com.yzj.core.entity.po.Admin">
+        <constructor>
+            <idArg column="adm_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="adm_password" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="adm_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    adm_id, adm_password, adm_name, status, phone
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from admin
+        where adm_id = #{admId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin
+    where adm_id = #{admId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yzj.core.entity.po.Admin">
+    insert into admin (adm_id, adm_password, adm_name, 
+      status, phone)
+    values (#{admId,jdbcType=INTEGER}, #{admPassword,jdbcType=VARCHAR}, #{admName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}), #{phone,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yzj.core.entity.po.Admin">
+        insert into admin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="admId != null">
+                adm_id,
+            </if>
+            <if test="admPassword != null">
+                adm_password,
+            </if>
+            <if test="admName != null">
+                adm_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="phone!= null">
+                phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="admId != null">
+                #{admId,jdbcType=INTEGER},
+            </if>
+            <if test="admPassword != null">
+                #{admPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="admName != null">
+                #{admName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yzj.core.entity.po.Admin">
+        update admin
+        <set>
+            <if test="admPassword != null">
+                adm_password = #{admPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="admName != null">
+                adm_name = #{admName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where adm_id = #{admId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yzj.core.entity.po.Admin">
+    update admin
+    set adm_password = #{admPassword,jdbcType=VARCHAR},
+      adm_name = #{admName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR}
+    where adm_id = #{admId,jdbcType=INTEGER}
+  </update>
+
+    <!-- 查询用户 -->
+    <select id="findUser" parameterType="String" resultType="admin">
+	    select *
+	    from admin
+	    where adm_id = #{usercode}
+	    and adm_password = #{password}
+	    and (status = '1')
+    </select>
+
+    <!-- 修改密码 -->
+    <update id="updatePw">
+        update admin
+        <set>
+            adm_password = #{newpassword}
+        </set>
+        where adm_id = #{usercode}
+    </update>
+</mapper>

@@ -1,0 +1,75 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE generatorConfiguration-->
+<!--        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"-->
+<!--        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">-->
+
+<!--<generatorConfiguration>-->
+
+<!--    &lt;!&ndash; context 是逆向工程的主要配置信息 &ndash;&gt;-->
+<!--    &lt;!&ndash; id：起个名字 &ndash;&gt;-->
+<!--    &lt;!&ndash; targetRuntime：设置生成的文件适用于那个 mybatis 版本 &ndash;&gt;-->
+<!--    <context id="boot_tsm" targetRuntime="MyBatis3">-->
+<!--        &lt;!&ndash;optional,指在创建class时，对注释进行控制&ndash;&gt;-->
+<!--        <commentGenerator>-->
+<!--            <property name="suppressDate" value="true"/>-->
+<!--            &lt;!&ndash; 是否去除自动生成的注释 true：是 ： false:否 &ndash;&gt;-->
+<!--            <property name="suppressAllComments" value="true"/>-->
+<!--        </commentGenerator>-->
+
+<!--        &lt;!&ndash;jdbc的数据库连接&ndash;&gt;-->
+<!--        &lt;!&ndash;这里是以变量的形式定义，具体的值在 application.properties 文件中&ndash;&gt;-->
+<!--        &lt;!&ndash;jdbc:mysql://localhost:3306/数据库名?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&ndash;&gt;-->
+<!--        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"-->
+<!--                        connectionURL="jdbc:mysql://localhost:3306/boot_tsm?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai"-->
+<!--                        userId="root"-->
+<!--                        password="12345678">-->
+<!--            &lt;!&ndash; 生成数据库中所有表的实体，不加则会生成所有实体表 &ndash;&gt;-->
+<!--            <property name="nullCatalogMeansCurrent" value="true"/>-->
+<!--        </jdbcConnection>-->
+<!--        &lt;!&ndash;非必须，类型处理器，在数据库类型和java类型之间的转换控制&ndash;&gt;-->
+<!--        <javaTypeResolver>-->
+<!--            &lt;!&ndash; 默认情况下数据库中的 decimal，bigInt 在 Java 对应是 sql 下的 BigDecimal 类 &ndash;&gt;-->
+<!--            &lt;!&ndash; 不是 double 和 long 类型 &ndash;&gt;-->
+<!--            &lt;!&ndash; 使用常用的基本类型代替 sql 包下的引用类型 &ndash;&gt;-->
+<!--            <property name="forceBigDecimals" value="false"/>-->
+<!--        </javaTypeResolver>-->
+
+<!--        &lt;!&ndash; targetPackage：生成的实体类所在的包 &ndash;&gt;-->
+<!--        &lt;!&ndash; targetProject：生成的实体类所在的硬盘位置 &ndash;&gt;-->
+<!--        &lt;!&ndash; DataObject 类存放位置 &ndash;&gt;-->
+<!--        <javaModelGenerator targetPackage="com.yzj.core.entity.po"-->
+<!--                            targetProject="src/main/java">-->
+<!--            &lt;!&ndash; 是否允许子包 &ndash;&gt;-->
+<!--            <property name="enableSubPackages" value="false"/>-->
+<!--            &lt;!&ndash; 是否对modal添加构造函数 &ndash;&gt;-->
+<!--            <property name="constructorBased" value="true"/>-->
+<!--            &lt;!&ndash; 是否清理从数据库中查询出的字符串左右两边的空白字符 &ndash;&gt;-->
+<!--            <property name="trimStrings" value="true"/>-->
+<!--            &lt;!&ndash; 建立modal对象是否不可改变 即生成的modal对象不会有setter方法，只有构造方法 &ndash;&gt;-->
+<!--            <property name="immutable" value="false"/>-->
+<!--        </javaModelGenerator>-->
+
+<!--        &lt;!&ndash; targetPackage 和 targetProject：生成的 mapper 文件的包和位置 &ndash;&gt;-->
+<!--        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">-->
+<!--            &lt;!&ndash; 针对数据库的一个配置，是否把 schema 作为字包名 &ndash;&gt;-->
+<!--            <property name="enableSubPackages" value="false"/>-->
+<!--        </sqlMapGenerator>-->
+
+<!--        &lt;!&ndash; targetPackage 和 targetProject：生成的 interface 文件的包和位置 &ndash;&gt;-->
+<!--        <javaClientGenerator type="XMLMAPPER"-->
+<!--                             targetPackage="com.yzj.core.dao" targetProject="src/main/java">-->
+<!--            &lt;!&ndash; 针对 oracle 数据库的一个配置，是否把 schema 作为字包名 &ndash;&gt;-->
+<!--            <property name="enableSubPackages" value="false"/>-->
+<!--        </javaClientGenerator>-->
+
+<!--        &lt;!&ndash; 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名&ndash;&gt;-->
+<!--        &lt;!&ndash;        <table tableName="dept" domainObjectName="Dept" enableCountByExample="false"-->
+<!--        enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>&ndash;&gt;-->
+
+<!--        &lt;!&ndash;        <table tableName="%" enableCountByExample="false" enableUpdateByExample="false"&ndash;&gt;-->
+<!--        &lt;!&ndash;               enableDeleteByExample="false" enableSelectByExample="false"&ndash;&gt;-->
+<!--        &lt;!&ndash;               selectByExampleQueryId="false"></table>&ndash;&gt;-->
+
+<!--    </context>-->
+
+<!--</generatorConfiguration>-->

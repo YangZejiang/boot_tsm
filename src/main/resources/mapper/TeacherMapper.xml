@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzj.core.dao.TeacherMapper">
+    <resultMap id="BaseResultMap" type="com.yzj.core.entity.po.Teacher">
+        <constructor>
+            <idArg column="tch_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="tch_password" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="tch_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="faculty" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    tch_id, tch_password, tch_name, phone, status, faculty
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher
+        where tch_id = #{tchId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from teacher
+    where tch_id = #{tchId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yzj.core.entity.po.Teacher">
+    insert into teacher (tch_id, tch_password, tch_name, 
+      phone, status, faculty)
+    values (#{tchId,jdbcType=INTEGER}, #{tchPassword,jdbcType=VARCHAR}, #{tchName,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{faculty,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yzj.core.entity.po.Teacher">
+        insert into teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tchId != null">
+                tch_id,
+            </if>
+            <if test="tchPassword != null">
+                tch_password,
+            </if>
+            <if test="tchName != null">
+                tch_name,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="faculty != null">
+                faculty,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tchId != null">
+                #{tchId,jdbcType=INTEGER},
+            </if>
+            <if test="tchPassword != null">
+                #{tchPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="tchName != null">
+                #{tchName,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="faculty != null">
+                #{faculty,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yzj.core.entity.po.Teacher">
+        update teacher
+        <set>
+            <if test="tchPassword != null">
+                tch_password = #{tchPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="tchName != null">
+                tch_name = #{tchName,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="faculty != null">
+                faculty = #{faculty,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where tch_id = #{tchId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yzj.core.entity.po.Teacher">
+    update teacher
+    set tch_password = #{tchPassword,jdbcType=VARCHAR},
+      tch_name = #{tchName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      faculty = #{faculty,jdbcType=VARCHAR}
+    where tch_id = #{tchId,jdbcType=INTEGER}
+  </update>
+
+    <!-- 查询用户 -->
+    <select id="findUser" parameterType="String" resultType="teacher">
+	    select *
+	    from teacher
+	    where tch_id = #{usercode}
+	    and tch_password = #{password}
+	    and (status = '1')
+    </select>
+
+    <!-- 修改密码 -->
+    <update id="updatePw">
+        update teacher
+        <set>
+            tch_password = #{newpassword}
+        </set>
+        where tch_id = #{usercode}
+    </update>
+</mapper>

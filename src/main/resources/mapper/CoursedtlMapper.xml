@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzj.core.dao.CoursedtlMapper">
+  <resultMap id="BaseResultMap" type="com.yzj.core.entity.po.Coursedtl">
+    <constructor>
+      <idArg column="cdtl_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cdtl_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="credit" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="credit_hour" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="attribution" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="nature" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="campus_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="college" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="exam_time" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    cdtl_id, cdtl_name, credit, credit_hour, attribution, nature, campus_code, college, 
+    exam_time, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from coursedtl
+    where cdtl_id = #{cdtlId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from coursedtl
+    where cdtl_id = #{cdtlId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yzj.core.entity.po.Coursedtl">
+    insert into coursedtl (cdtl_id, cdtl_name, credit, 
+      credit_hour, attribution, nature, 
+      campus_code, college, exam_time, 
+      status)
+    values (#{cdtlId,jdbcType=VARCHAR}, #{cdtlName,jdbcType=VARCHAR}, #{credit,jdbcType=INTEGER}, 
+      #{creditHour,jdbcType=INTEGER}, #{attribution,jdbcType=VARCHAR}, #{nature,jdbcType=VARCHAR}, 
+      #{campusCode,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{examTime,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yzj.core.entity.po.Coursedtl">
+    insert into coursedtl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cdtlId != null">
+        cdtl_id,
+      </if>
+      <if test="cdtlName != null">
+        cdtl_name,
+      </if>
+      <if test="credit != null">
+        credit,
+      </if>
+      <if test="creditHour != null">
+        credit_hour,
+      </if>
+      <if test="attribution != null">
+        attribution,
+      </if>
+      <if test="nature != null">
+        nature,
+      </if>
+      <if test="campusCode != null">
+        campus_code,
+      </if>
+      <if test="college != null">
+        college,
+      </if>
+      <if test="examTime != null">
+        exam_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cdtlId != null">
+        #{cdtlId,jdbcType=VARCHAR},
+      </if>
+      <if test="cdtlName != null">
+        #{cdtlName,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null">
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="creditHour != null">
+        #{creditHour,jdbcType=INTEGER},
+      </if>
+      <if test="attribution != null">
+        #{attribution,jdbcType=VARCHAR},
+      </if>
+      <if test="nature != null">
+        #{nature,jdbcType=VARCHAR},
+      </if>
+      <if test="campusCode != null">
+        #{campusCode,jdbcType=VARCHAR},
+      </if>
+      <if test="college != null">
+        #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="examTime != null">
+        #{examTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yzj.core.entity.po.Coursedtl">
+    update coursedtl
+    <set>
+      <if test="cdtlName != null">
+        cdtl_name = #{cdtlName,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null">
+        credit = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="creditHour != null">
+        credit_hour = #{creditHour,jdbcType=INTEGER},
+      </if>
+      <if test="attribution != null">
+        attribution = #{attribution,jdbcType=VARCHAR},
+      </if>
+      <if test="nature != null">
+        nature = #{nature,jdbcType=VARCHAR},
+      </if>
+      <if test="campusCode != null">
+        campus_code = #{campusCode,jdbcType=VARCHAR},
+      </if>
+      <if test="college != null">
+        college = #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="examTime != null">
+        exam_time = #{examTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cdtl_id = #{cdtlId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yzj.core.entity.po.Coursedtl">
+    update coursedtl
+    set cdtl_name = #{cdtlName,jdbcType=VARCHAR},
+      credit = #{credit,jdbcType=INTEGER},
+      credit_hour = #{creditHour,jdbcType=INTEGER},
+      attribution = #{attribution,jdbcType=VARCHAR},
+      nature = #{nature,jdbcType=VARCHAR},
+      campus_code = #{campusCode,jdbcType=VARCHAR},
+      college = #{college,jdbcType=VARCHAR},
+      exam_time = #{examTime,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where cdtl_id = #{cdtlId,jdbcType=VARCHAR}
+  </update>
+</mapper>

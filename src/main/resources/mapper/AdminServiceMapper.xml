@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yzj.core.dao.AdminServiceMapper">
+    <select id="selectNewBook" resultType="AdmNewBook">
+	SELECT
+	apply_id,
+	course.tch_id,
+	apply.isbn,
+	apply.title,
+	apply.author,
+	apply.press,
+	apply.fixed_price,
+	teacher.faculty,
+	teacher.phone,
+	teacher.tch_name
+FROM
+	apply
+LEFT JOIN course
+ON apply.cors_id = course.cors_id
+LEFT JOIN teacher
+ON course.tch_id = teacher.tch_id
+WHERE
+	( SELECT count( 1 ) AS num FROM textbook WHERE textbook.isbn = apply.isbn AND textbook.`status`='1' ) = 0
+    </select>
+
+    <select id="selectNewOrder" resultType="AdmNewOrder">
+SELECT
+	stu_order_list.isbn,
+	textbook.title,
+	textbook.stock_quantity,
+	COUNT( 1 ) AS 'isbnorder_num',
+CASE
+		WHEN ( ( COUNT( 1 ) - textbook.stock_quantity ) IS NULL ) THEN
+		COUNT( 1 ) ELSE ( COUNT( 1 ) - textbook.stock_quantity )
+	END AS 'lack' ,
+	CASE
+	WHEN (SELECT COUNT(*) FROM order_ad WHERE order_ad.isbn =stu_order_list.isbn AND order_ad.`status`='0' AND order_ad.is_active ='1'	)>0 THEN
+		1
+	ELSE
+		0
+END AS 'is_processing'
+
+FROM
+	stu_order_list
+	LEFT JOIN textbook ON textbook.isbn = stu_order_list.isbn
+	WHERE stu_order_list.`status` ='0'
+GROUP BY
+	stu_order_list.isbn
+HAVING
+	(
+	lack > 0
+	)
+    </select>
+
+    <select id="selectDistributionBySemester" resultType="AdmDistribution">
+        SELECT
+        orderdtl.class_id,
+        student.stu_name,
+        student.phone
+        FROM
+        orderdtl
+        LEFT JOIN student ON student.class_id = orderdtl.class_id
+        AND student.is_monitor = '1'
+        WHERE
+        (orderdtl.semester = #{semester}
+        AND orderdtl.STATUS = '0'
+        OR '1')
+        <if test="classId != null and classId != ''">
+            AND orderdtl.class_id = #{classId}
+        </if>
+        GROUP BY
+        orderdtl.class_id,
+        student.stu_name,
+        student.phone
+    </select>
+
+    <select id="selectDoneNumDTOByClassidAndSemester" resultType="java.util.HashMap">
+	SELECT
+	orderdtl.status,
+	a.isbnorder_num AS 'isbnorderNum',
+	CASE WHEN textbook.stock_quantity IS NUll  THEN
+		0
+	ELSE
+	textbook.stock_quantity
+END AS 'stockQuantity'
+
+	FROM
+	orderdtl
+	LEFT JOIN ( SELECT isbn, count( * ) AS 'isbnorder_num' FROM orderdtl WHERE STATUS = '0' GROUP BY isbn ) a ON orderdtl.isbn = a.isbn
+	LEFT JOIN textbook ON textbook.isbn = orderdtl.isbn
+	WHERE
+	class_id = #{classId}
+	AND semester = #{semester}
+	GROUP BY
+	orderdtl.isbn,
+	orderdtl.STATUS,
+	a.isbnorder_num
+	</select>
+
+    <select id="selectDistributionDtlByClassidAndSemester" resultType="AdmDistributionDtl">
+SELECT
+	orderdtl.title,
+	orderdtl.isbn,
+	orderdtl.`status`,
+	a.isbnorder_num,
+	stock_quantity,
+	COUNT(*) AS "classorder_num"
+FROM
+	orderdtl
+	LEFT JOIN ( SELECT isbn, count( * ) AS 'isbnorder_num' FROM orderdtl WHERE STATUS = '0' GROUP BY isbn ) a ON orderdtl.isbn = a.isbn
+	LEFT JOIN textbook ON textbook.isbn = orderdtl.isbn
+WHERE
+	class_id = #{classId}
+	AND semester = #{semester}
+GROUP BY
+	orderdtl.isbn,
+	`status`,
+	a.isbnorder_num
+	</select>
+
+    <select id="countBadge1" resultType="Integer">
+    SELECT
+	COUNT(*)
+    FROM(
+    SELECT
+	apply_id,
+	course.tch_id,
+	apply.isbn,
+	apply.title,
+	apply.author,
+	apply.press,
+	apply.fixed_price
+    FROM
+	apply
+	LEFT JOIN course ON apply.cors_id = course.cors_id
+	LEFT JOIN teacher ON course.tch_id = teacher.tch_id
+    WHERE
+	( SELECT count( 1 ) AS num FROM textbook WHERE textbook.isbn = apply.isbn AND textbook.`status`='1') = 0) a
+</select>
+
+    <select id="countBadge2" resultType="Integer">
+    SELECT
+	COUNT(*)
+    FROM
+	(
+	SELECT
+		stu_order_list.isbn,
+		textbook.title,
+		textbook.stock_quantity,
+		COUNT( 1 ) AS 'isbnorder_num',
+	CASE
+			WHEN ( ( COUNT( 1 ) - textbook.stock_quantity ) IS NULL ) THEN
+			COUNT( 1 ) ELSE ( COUNT( 1 ) - textbook.stock_quantity )
+		END AS 'lack'
+	FROM
+		stu_order_list
+		LEFT JOIN textbook ON textbook.isbn = stu_order_list.isbn
+		WHERE stu_order_list.`status` = '0'
+	GROUP BY
+		stu_order_list.isbn
+    HAVING
+	    ( lack > 0 )) a
+    </select>
+
+    <select id="countBadge3" resultType="Integer">
+   SELECT COUNT(*) FROM
+(SELECT DISTINCT class_id FROM
+(SELECT
+orderdtl.class_id,
+orderdtl.semester,
+orderdtl.isbn,
+	a.isbnorder_num,
+	stock_quantity,
+	COUNT(*) AS "classorder_num"
+FROM
+	orderdtl
+	LEFT JOIN ( SELECT isbn, count( * ) AS 'isbnorder_num' FROM orderdtl WHERE STATUS = '0' GROUP BY isbn ) a ON orderdtl.isbn = a.isbn
+	LEFT JOIN textbook ON textbook.isbn = orderdtl.isbn
+WHERE orderdtl.`status`='0'
+GROUP BY
+orderdtl.class_id,
+	orderdtl.isbn,
+	orderdtl.semester,
+	a.isbnorder_num
+	) a WHERE a.stock_quantity>=a.isbnorder_num ) a
+    </select>
+
+</mapper>

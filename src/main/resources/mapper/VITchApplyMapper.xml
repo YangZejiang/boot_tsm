@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzj.core.dao.VITchApplyMapper">
+    <resultMap id="BaseResultMap" type="com.yzj.core.entity.vo.TchApply">
+        <constructor>
+            <arg column="apply_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="isbn" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="semester" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="tch_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="cdtl_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="cdtl_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+    <insert id="insert" parameterType="com.yzj.core.entity.vo.TchApply">
+    insert into tch_apply_list (apply_id, isbn, title, 
+      semester, tch_id, cdtl_id, 
+      cdtl_name)
+    values (#{applyId,jdbcType=INTEGER}, #{isbn,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, 
+      #{semester,jdbcType=VARCHAR}, #{tchId,jdbcType=INTEGER}, #{cdtlId,jdbcType=VARCHAR}, 
+      #{cdtlName,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yzj.core.entity.vo.TchApply">
+        insert into tch_apply_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyId != null">
+                apply_id,
+            </if>
+            <if test="isbn != null">
+                isbn,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="semester != null">
+                semester,
+            </if>
+            <if test="tchId != null">
+                tch_id,
+            </if>
+            <if test="cdtlId != null">
+                cdtl_id,
+            </if>
+            <if test="cdtlName != null">
+                cdtl_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyId != null">
+                #{applyId,jdbcType=INTEGER},
+            </if>
+            <if test="isbn != null">
+                #{isbn,jdbcType=CHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="semester != null">
+                #{semester,jdbcType=VARCHAR},
+            </if>
+            <if test="tchId != null">
+                #{tchId,jdbcType=INTEGER},
+            </if>
+            <if test="cdtlId != null">
+                #{cdtlId,jdbcType=VARCHAR},
+            </if>
+            <if test="cdtlName != null">
+                #{cdtlName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByIdAndSemester" resultType="tchApply">
+    select * from tch_apply_list where tch_id = #{id} and semester = #{semester}
+  </select>
+
+    <select id="selectByTchApply" resultType="TchApply" parameterType="TchApply">
+        select * from tch_apply_list
+        <where>
+            <if test="semester != null and semester != ''">
+                semester = #{semester}
+            </if>
+            <if test="tchId != null and tchId !=''">
+                AND tch_id = #{tchId}
+            </if>
+            <if test="cdtlId !=null and cdtlId !=''">
+                AND cdtl_id= #{cdtlId}
+            </if>
+            <if test="cdtlName != null and cdtlName !=''">
+                AND cdtl_Name = #{cdtlName}
+            </if>
+        </where>
+        <if test="start != null and rows != null">
+            limit #{start},#{rows}
+        </if>
+    </select>
+    <select id="countByTchApply" resultType="Integer" parameterType="TchApply">
+        select count(*)from tch_apply_list
+        <where>
+            <if test="semester != null and semester != ''">
+                semester = #{semester}
+            </if>
+            <if test="tchId != null and tchId !=''">
+                AND tch_id = #{tchId}
+            </if>
+            <if test="cdtlId !=null and cdtlId !=''">
+                AND cdtl_id= #{cdtlId}
+            </if>
+            <if test="cdtlName != null and cdtlName !=''">
+                AND cdtl_Name = #{cdtlName}
+            </if>
+        </where>
+
+    </select>
+
+</mapper>
