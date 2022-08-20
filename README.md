@@ -1,4 +1,4 @@
-### Graduation Project - College Teaching Material Subscription System
+### Graduation Project - College Textbook Subscription System
 ### 毕业设计 - 高效教材征订系统
 ### 1 开发环境与框架
 
